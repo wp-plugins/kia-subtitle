@@ -1,6 +1,6 @@
 === KIA Subtitle ===
 Contributors: helgatheviking
-Donate link: http://www.kathyisawesome.com/436/kia-subtitle/
+Donate link: https://inspirepay.com/pay/helgatheviking
 Tags: subtitle, simple
 Requires at least: 3.4
 Tested up to: 3.4
@@ -36,8 +36,11 @@ You can also use the shortcode [the-subtitle] to display it within the post cont
 
 == Changelog ==
 
+= 1.0.2 =
+* update donate link
+
 = 1.0.1 =
-* no need to load the script on the edit.php screen
+* Don't load script on edit.php screen
 
 = 1.0 =
 * Initial release.
