@@ -3,7 +3,7 @@
 Plugin Name: KIA Subtitle
 Plugin URI: http://www.kathyisawesome.com/436/kia-subtitle/
 Description: Adds a subtitle field to WordPress' Post editor
-Version: 1.2
+Version: 1.3
 Author: Kathy Darling
 Author URI: http://www.kathyisawesome.com
 License: GPL2
@@ -38,7 +38,11 @@ if ( ! class_exists( "KIA_Subtitle" ) ) :
 
 class KIA_Subtitle {
 
+    static $min_wp = '3.0';
+
     function __construct(){
+
+        global $wp_version;
 
         // load the textdomain
         add_action( 'plugins_loaded', array( __CLASS__, 'load_textdomain' ) );
@@ -48,8 +52,15 @@ class KIA_Subtitle {
 
         // Backend functions:
         add_action( 'admin_enqueue_scripts', array( __CLASS__, 'load_scripts' ) );
-        add_action( 'edit_form_advanced', array( __CLASS__, 'add_input' ) );
-        add_action( 'edit_page_form', array( __CLASS__, 'add_input' ) );
+
+        // @ Todo : in next version of WP remove this back-compatibility
+        if ( version_compare( $wp_version, $min_wp, '>=' ) ) {
+            add_action( 'edit_form_after_title', array( __CLASS__, 'add_input' ) );
+        } else {
+            add_action( 'edit_form_advanced', array( __CLASS__, 'add_input' ) );
+            add_action( 'edit_page_form', array( __CLASS__, 'add_input' ) );
+        }
+        
         add_action( 'save_post', array( __CLASS__, 'meta_save' ) );
 
         // Edit Columns + Quickedit:
@@ -168,7 +179,7 @@ class KIA_Subtitle {
         }
 
         // echo the inputfield with the value.
-        echo '<input type="text" class="widefat '.$prompt.'" name="subtitle" value="'.$sub.'" id="the_subtitle" tabindex="1"/>';
+        echo '<input type="text" class="widefat '.$prompt.'" name="subtitle" value="'.esc_attr($sub).'" id="the_subtitle" tabindex="1"/>';
     }
 
     /**
@@ -229,7 +240,7 @@ class KIA_Subtitle {
         switch ( $column_name ) :
             case 'subtitle' :
                 echo $sub = get_post_meta( get_the_ID(), 'kia_subtitle', true );
-                echo '<div class="hidden kia-subtitle-value">' . $sub . '</div>';
+                echo '<div class="hidden kia-subtitle-value">' . esc_html($sub) . '</div>';
             break;
         endswitch;
     }
@@ -245,7 +256,7 @@ class KIA_Subtitle {
     ?>
             <label class="kia-subtitle">
                 <span class="title"><?php _e( 'Subtitle', 'kia_subtitle' ) ?></span>
-                <span class="input-text-wrap"><input type="text" name="<?php echo $column_name; ?>" class="ptitle kia-subtitle-input" value=""></span>
+                <span class="input-text-wrap"><input type="text" name="<?php echo esc_attr($column_name); ?>" class="ptitle kia-subtitle-input" value=""></span>
 
                 <?php wp_nonce_field( plugin_basename( __FILE__ ), 'kia_subnonce' ); ?>
 
