@@ -3,7 +3,7 @@
 Plugin Name: KIA Subtitle
 Plugin URI: http://www.kathyisawesome.com/436/kia-subtitle/
 Description: Adds a subtitle field to WordPress' Post editor
-Version: 1.4.2
+Version: 1.4.3
 Author: Kathy Darling
 Author URI: http://www.kathyisawesome.com
 License: GPL2
@@ -140,7 +140,7 @@ class KIA_Subtitle {
         $clean = array();
 
         //probably overkill, but make sure that the post type actually exists and is one we're cool with modifying
-        $args = ( array ) apply_filters( 'kia_subtitle_post_type_args', array() );
+        $args = ( array ) apply_filters( 'kia_subtitle_post_type_args', array( 'show_in_menu' => true ) );
 
         $post_types = get_post_types( $args );
 
@@ -249,7 +249,7 @@ class KIA_Subtitle {
         $options = get_option( 'kia_subtitle_options' );
 
         // only show input if the post type was not excluded in options
-        if ( isset ( $options['post_types'] ) && ! in_array( $post->post_type, $options[ 'post_types'] ) ) {
+        if ( ! isset ( $options['post_types'] ) || ! in_array( $post->post_type, $options[ 'post_types'] ) ) {
 
             //create the meta field (don't use a metabox, we have our own styling):
             wp_nonce_field( plugin_basename( __FILE__ ), 'kia_subnonce' );
@@ -392,4 +392,9 @@ if( ! function_exists( 'get_the_subtitle' )){
         return KIA_Subtitle::get_the_subtitle( $post_id );
     }
 }
+
+
+//delete_option( 'kia_subtitle_options' );
+
+
 ?>
