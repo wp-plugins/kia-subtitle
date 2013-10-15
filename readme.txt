@@ -3,8 +3,8 @@ Contributors: helgatheviking
 Donate link: https://inspirepay.com/pay/helgatheviking
 Tags: subtitle, simple
 Requires at least: 3.4
-Tested up to: 3.5.1
-Stable tag: 1.4.3
+Tested up to: 3.6
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,15 +36,11 @@ You can also use the shortcode [the-subtitle] to display it within the post cont
 
 1. This is what the input will look like on the post editor screen.
 
-== Bug Reporting ==
-
-Please report any issues at: https://github.com/helgatheviking/KIA-Subtitle/issues
-
-== FAQ ==
+== Frequently Asked Questions ==
 
 = How do I display the subtitle in my theme? =
 
-The simplest way is as follows.
+The simplest way is with the `the_subtitle()` template tag as follows:
 `
 if( function_exists( 'the_subtitle' ) ) the_subtitle();
 `
@@ -54,6 +50,37 @@ You can wrap the string in some markup using the *$before* and *$after* paramete
 if( function_exists( 'the_subtitle' ) ) the_subtitle( '<h2 class="subtitle">', '</h2>' );
 `
 
+= Where do I add this code? =
+
+Unfortunately, I cannot tell you *exactly* what file to place the above code in because 1. I don't know where you want to display the subtitle and 2. every theme's structure is different.
+
+However, in general, `the_subtitle()` is a template tag so you will want to put it in a template file.  Probably, you are looking for the file that contains your post loop.  For most themes it's *single.php* ( or *page.php* for pages ), but for many it could also be *content.php*.  Assuming you want the subtitle to display directly after your main title, you'd place the above code after:
+
+`
+<h1 class="entry-title"><?php the_title(); ?></h1>
+`
+
+As an *example* if you wanted to display the subtitle on standard single posts, in the Twenty Twelve theme you'd edit the content.php ( or preferabbly override the template in a child theme ):
+
+`
+<header class="entry-header">
+	<?php the_post_thumbnail(); ?>
+	<?php if ( is_single() ) : ?>
+	<h1 class="entry-title"><?php the_title(); ?></h1>
+        <?php if( function_exists( 'the_subtitle' ) ) the_subtitle( '<h2 class="subtitle">', '</h2>' ); ?>
+	<?php else : ?>
+	<h1 class="entry-title">
+		<a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'twentytwelve' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a>
+	</h1>
+	<?php endif; // is_single() ?>
+	<?php if ( comments_open() ) : ?>
+		<div class="comments-link">
+			<?php comments_popup_link( '<span class="leave-reply">' . __( 'Leave a reply', 'twentytwelve' ) . '</span>', __( '1 Reply', 'twentytwelve' ), __( '% Replies', 'twentytwelve' ) ); ?>
+		</div><!-- .comments-link -->
+	<?php endif; // comments_open() ?>
+</header><!-- .entry-header -->
+`
+
 = How do I style the subtitle? =
 
 If you have wrapped the subtitle in an H2 tag with the class of subtitle like in the second example above, you can then style it any way you'd like.
@@ -61,60 +88,6 @@ If you have wrapped the subtitle in an H2 tag with the class of subtitle like in
 h2.subtitle { color: pink; }
 `
 
-== Changelog ==
+= Where can I report bugs? =
 
-= 1.4.2 =
-* Adjust $args for get_post_types()
-* Fix buggy conditiona logic for users with no post types excluded
-
-= 1.4.2 =
-* Adjust $args for get_post_types()
-* switch 'kia_subtitle_post_types' filter to 'kia_subtitle_post_type_args'
-
-= 1.4.1 =
-* Adjust $args for get_post_types()
-* add 'kia_subtitle_post_types' filter to plugin's options
-
-= 1.4 =
-* Add ability to exclude subtitle from certain post types
-
-= 1.3.4 =
-* Add filter `the_subtitle` to allow subtitle content to be modified
-
-= 1.3.3 =
-* Fix Notice: Undefined property
-* Clean up enqueue scripts
-
-= 1.3.2 =
-* Fix for back-compatibility
-
-= 1.3.1 =
-* Add example code to FAQ
-
-= 1.3 =
-* Better escaping of HTML attributes thanks to @nealpoole
-* Take advantage of new action hook in WP 3.5
-
-= 1.2 =
-* Mimic the_title(), so the_subtitle() now accepts before, after and echo parameters:
-	`the_subtitle( $before = '', $after = '', $echo = true )`
-
-= 1.1.2 =
-* Fixed quick edit refresh ( second click on quick edit for same item and the value still reflected the original )
-
-= 1.1.1 =
-* Fix ability to remove subtitle
-
-= 1.1 =
-* Add column to edit.php screen
-* Add subtitle to quick edit
-* Load script on edit.php screen again
-
-= 1.0.2 =
-* update donate link
-
-= 1.0.1 =
-* Don't load script on edit.php screen
-
-= 1.0 =
-* Initial release.
+Please report any issues at: https://github.com/helgatheviking/KIA-Subtitle/issues
