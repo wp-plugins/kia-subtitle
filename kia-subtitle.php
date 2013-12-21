@@ -3,7 +3,7 @@
 Plugin Name: KIA Subtitle
 Plugin URI: http://www.kathyisawesome.com/436/kia-subtitle/
 Description: Adds a subtitle field to WordPress' Post editor
-Version: 1.5.3
+Version: 1.5.4
 Author: Kathy Darling
 Author URI: http://www.kathyisawesome.com
 License: GPL2
@@ -266,7 +266,7 @@ class KIA_Subtitle {
             $sub = get_post_meta( get_the_ID(), 'kia_subtitle', true );
 
             // echo the inputfield with the value.
-            printf( '<input type="text" class="widefat" name="subtitle" placeholder="%s" value="%s" id="the_subtitle" tabindex="1"/>',
+            printf( '<input type="text" class="widefat" name="subtitle" placeholder="%s" value="%s" id="the_subtitle" />',
                      __( 'Subtitle', 'kia-subtitle'   ),
                      esc_attr($sub) );
 
