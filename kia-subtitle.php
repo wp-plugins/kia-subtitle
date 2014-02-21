@@ -3,7 +3,7 @@
 Plugin Name: KIA Subtitle
 Plugin URI: http://www.kathyisawesome.com/436/kia-subtitle/
 Description: Adds a subtitle field to WordPress' Post editor
-Version: 1.6.1
+Version: 1.6.2
 Author: Kathy Darling
 Author URI: http://www.kathyisawesome.com
 License: GPL2
@@ -48,7 +48,7 @@ class KIA_Subtitle {
      * @var Radio_Buttons_for_Taxonomies The single instance of the class
      * @since 1.6
      */
-    public $version = '1.6.1';
+    public $version = '1.6.2';
 
     /**
      * Main WooCommerce Instance
@@ -119,9 +119,9 @@ class KIA_Subtitle {
 
         // save the subtitle as post meta
         add_action( 'save_post', array( $this, 'meta_save' ) );
+        add_action( 'edit_attachment', array( $this, 'meta_save' ) );
 
         // Edit Columns + Quickedit:
-
         $options = get_option( 'kia_subtitle_options', false );
 
         // only show input if the post type was enabled in options
@@ -318,8 +318,8 @@ class KIA_Subtitle {
 
             // echo the inputfield with the value.
             printf( '<input type="text" class="widefat" name="subtitle" placeholder="%s" value="%s" id="the_subtitle" />',
-__( 'Subtitle', 'kia-subtitle' ),
-esc_attr($sub) );
+                __( 'Subtitle', 'kia-subtitle' ),
+                esc_attr($sub) );
 
         }
     }
