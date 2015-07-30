@@ -93,6 +93,19 @@ If you have wrapped the subtitle in an H2 tag with the class of subtitle like in
 h2.subtitle { color: pink; }
 `
 
+= Can I add the subtitle to the Page Title Meta tag =
+`
+function kia_add_subtitle_to_wp_title( $title ) {
+   if ( is_single() && function_exists('get_the_subtitle')) && $subtitle == get_the_subtitle( get_the_ID() ) ) {
+        $title .= $subtitle;
+   }
+}
+add_filter('wp_title','kia_add_subtitle_to_wp_title');
+`
+
+= Is this translation ready? =
+WPML now supports KIA Subtitle!
+
 == Changelog ==
 
 = 1.6.3 =
